@@ -1,0 +1,73 @@
+#include <stdio.h>
+#include <string.h>
+
+// Function to find the common prefix of two strings
+char* commonPrefixUtil(char* str1, char* str2) {
+    int n1 = strlen(str1);
+    int n2 = strlen(str2);
+    int i, j;
+
+    // Compare each character of both strings
+    for (i = 0, j = 0; i < n1 && j < n2; i++, j++) {
+        if (str1[i] != str2[j]) {
+            break;
+        }
+    }
+
+    // Create a new string to store the common prefix
+    char* commonPrefix = (char*)malloc((i + 1) * sizeof(char));
+    strncpy(commonPrefix, str1, i);
+    commonPrefix[i] = '\0';
+
+    return commonPrefix;
+}
+
+// Function to find the longest common prefix among an array of strings
+char* longestCommonPrefix(char** strs, int n) {
+    if (n <= 0) {
+        // If the array is empty, return an empty string
+        char* emptyString = (char*)malloc(sizeof(char));
+        *emptyString = '\0';
+        return emptyString;
+    }
+
+    char* prefix = strs[0];
+
+    for (int i = 1; i < n; i++) {
+        // Update the prefix by finding common prefix with the next string
+        prefix = commonPrefixUtil(prefix, strs[i]);
+    }
+
+    return prefix;
+}
+
+int main() {
+    int n;
+
+    // Input number of strings in the array
+    printf("Enter the number of strings in the array: ");
+    scanf("%d", &n);
+
+    // Input array of strings
+    char** strs = (char**)malloc(n * sizeof(char*));
+    printf("Enter the strings in the array:\n");
+    for (int i = 0; i < n; i++) {
+        strs[i] = (char*)malloc(100 * sizeof(char)); // Assuming a maximum length of 100 for each string
+        scanf("%s", strs[i]);
+    }
+
+    // Find the longest common prefix
+    char* result = longestCommonPrefix(strs, n);
+
+    // Output the result
+    printf("Longest common prefix: %s\n", result);
+
+    // Free allocated memory
+    for (int i = 0; i < n; i++) {
+        free(strs[i]);
+    }
+    free(strs);
+    free(result);
+
+    return 0;
+}
