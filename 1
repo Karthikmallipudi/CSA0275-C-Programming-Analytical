@@ -1,0 +1,45 @@
+#include <stdio.h>
+#include <string.h>
+
+int lengthOfLongestSubstring(char *s) {
+    int n = strlen(s);
+    int maxLength = 0;
+    int start = 0;
+    int charIndex[256];  
+  
+    for (int i = 0; i < 256; i++) {
+        charIndex[i] = -1;
+    }
+
+    for (int end = 0; end < n; end++) {
+       
+        if (charIndex[s[end]] != -1) {
+            start = charIndex[s[end]] + 1;
+        }
+
+        
+        charIndex[s[end]] = end;
+
+       
+        if (end - start + 1 > maxLength) {
+            maxLength = end - start + 1;
+        }
+    }
+
+    return maxLength;
+}
+
+int main() {
+    char input[100];
+
+    printf("Enter a string: ");
+    scanf("%s", input);
+
+   
+    int result = lengthOfLongestSubstring(input);
+
+ 
+    printf("Length of the longest substring without repeating characters: %d\n", result);
+
+    return 0;
+}
