@@ -1,0 +1,47 @@
+#include <stdio.h>
+
+int minJumps(int arr[], int size) {
+    if (size <= 1) {
+        return 0; 
+    }
+
+    int maxReach = arr[0]; 
+    int steps = arr[0];   
+	int jumps = 1;
+
+    for (int i = 1; i < size; i++) {
+        if (i == size - 1) {
+            return jumps; 
+        }
+
+        maxReach = (maxReach > i + arr[i]) ? maxReach : i + arr[i];
+        steps--;
+
+        if (steps == 0) {
+            jumps++;
+
+            if (i >= maxReach) {
+                return -1;
+            }
+
+            steps = maxReach - i;
+        }
+    }
+
+    return -1; 
+}
+
+int main() {
+    int arr[] = {2, 3, 1, 1, 4};
+    int size = sizeof(arr) / sizeof(arr[0]);
+
+    int result = minJumps(arr, size);
+
+    if (result != -1) {
+        printf("Minimum number of jumps needed: %d\n", result);
+    } else {
+        printf("Cannot reach the end of the array.\n");
+    }
+
+    return 0;
+}
