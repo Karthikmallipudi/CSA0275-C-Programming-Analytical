@@ -1,0 +1,32 @@
+#include <stdio.h>
+#include <string.h>
+
+int countDistinctSubstrings(char* s) {
+    int n = strlen(s);
+    int result = 0;
+
+    for (int i = 0; i < n; i++) {
+        int visited[256] = {0}; 
+
+        for (int j = i; j < n; j++) {
+            if (visited[s[j]] == 1) {
+            
+                break;
+            } else {
+                visited[s[j]] = 1;
+                result++;
+            }
+        }
+    }
+
+    return result;
+}
+
+int main() {
+    char s[] = "banana";
+    int result = countDistinctSubstrings(s);
+
+    printf("Count of distinct substrings: %d\n", result);
+
+    return 0;
+}
