@@ -1,0 +1,74 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_CHAR 256
+
+char* minWindowSubstring(char* s, char* pattern) {
+    int patternCount[MAX_CHAR] = {0};
+    int currentCount[MAX_CHAR] = {0};
+
+    int patternLen = strlen(pattern);
+    int stringLen = strlen(s);
+
+    if (stringLen < patternLen) {
+        return "No window found";
+    }
+
+    for (int i = 0; i < patternLen; i++) {
+        patternCount[pattern[i]]++;
+    }
+
+    int start = 0, minLength = stringLen + 1;
+    int minWindowStart = 0;
+    int count = 0;
+
+    for (int end = 0; end < stringLen; end++) {
+        if (patternCount[s[end]] == 0) {
+            continue;
+        }
+
+        currentCount[s[end]]++;
+
+        if (currentCount[s[end]] <= patternCount[s[end]]) {
+            count++;
+        }
+
+        if (count == patternLen) {
+            while (patternCount[s[start]] == 0 || currentCount[s[start]] > patternCount[s[start]]) {
+                if (currentCount[s[start]] > patternCount[s[start]]) {
+                    currentCount[s[start]]--;
+                }
+                start++;
+            }
+
+            int windowLen = end - start + 1;
+            if (windowLen < minLength) {
+                minLength = windowLen;
+                minWindowStart = start;
+            }
+        }
+    }
+
+    if (minLength == stringLen + 1) {
+        return "No window found";
+    }
+
+    char* result = malloc((minLength + 1) * sizeof(char));
+    strncpy(result, s + minWindowStart, minLength);
+    result[minLength] = '\0';
+
+    return result;
+}
+
+int main() {
+    char s[] = "ADOBECODEBANC";
+    char pattern[] = "ABC";
+
+    char* result = minWindowSubstring(s, pattern);
+
+    printf("Minimum window substring: %s\n", result);
+
+    free(result);
+
+    return 0;
+}
