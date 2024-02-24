@@ -1,0 +1,32 @@
+#include <stdio.h>
+
+int longestIncreasingSubarray(int arr[], int size) {
+    if (size <= 1) {
+        return size;
+    }
+
+    int maxLength = 1;
+    int currentLength = 1;
+
+    for (int i = 1; i < size; i++) {
+        if (arr[i] > arr[i - 1]) {
+            currentLength++;
+        } else {
+            maxLength = (currentLength > maxLength) ? currentLength : maxLength;
+            currentLength = 1;
+        }
+    }
+
+    return (currentLength > maxLength) ? currentLength : maxLength;
+}
+
+int main() {
+    int arr[] = {2, 2, 2, 2, 1, 3, 4, 7, 8, 9, 1};
+    int size = sizeof(arr) / sizeof(arr[0]);
+
+    int result = longestIncreasingSubarray(arr, size);
+
+    printf("Length of the longest contiguous increasing subarray: %d\n", result);
+
+    return 0;
+}
